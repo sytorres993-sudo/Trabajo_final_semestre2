@@ -1,0 +1,45 @@
+*{box-sizing:border-box;font-family:Inter, Arial, Helvetica, sans-serif}
+:root{
+  --negro:#000000;
+  --azul-oscuro:#000A3C;
+  --cian:#00C5C9;
+  --texto:#E8FBFB;
+  --card:#071033;
+  /* Ruta por defecto a la imagen de fondo. Reemplaza 'images/fondo.jpg' por el nombre y carpeta de tu imagen.
+     Recomendado: coloca la imagen en la carpeta `web/images/` y pon aquí 'images/mi-fondo.jpg'. */
+  --fondo-image: url('images/fondo.jpg');
+}
+/* Fondo con imagen y overlay oscuro para mantener legibilidad */
+body{margin:0;padding:0;background-color:var(--negro);background-image:var(--fondo-image);background-size:cover;background-position:center calc(50% + 9.5cm);background-repeat:no-repeat;color:var(--texto);position:relative}
+/* Cambié la overlay a un degradado: oscuro en la parte superior y más transparente hacia abajo
+   para que la parte inferior no quede completamente negra. Ajusta los valores rgba y los puntos (20%, 60%)
+   para subir/bajar la transición. */
+body::before{content:"";position:fixed;inset:0;background:linear-gradient(to bottom, rgba(0,10,60,0.65) 0%, rgba(0,10,60,0.55) 20%, rgba(0,10,60,0.35) 50%, rgba(0,10,60,0.0) 100%);pointer-events:none;z-index:0}
+
+/* Cuando el usuario está logueado como ADMIN, subir la imagen 9.8cm (10cm - 0.2cm) */
+body.admin-logged{background-position:center calc(50% - 0.3cm)}
+
+/* Cuando el usuario está logueado como CAJERO, subir la imagen 10cm (15cm - 5cm) */
+body.cajero-logged{background-position:center calc(50% - 0.5cm)}
+
+header{background:transparent;color:var(--texto);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--cian);position:relative;z-index:1}
+header h1{margin:0;font-size:1.4rem}
+#login input{margin-right:8px;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:var(--texto)}
+#login input::placeholder{color:rgba(232,251,251,0.6)}
+main{padding:20px;position:relative;z-index:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.6);border:1px solid rgba(0,197,201,0.06)}
+.card h3{margin-top:0;color:var(--cian)}
+.hidden{display:none}
+.lista{height:180px;overflow:auto;background:transparent;padding:10px;border-radius:6px;border:1px dashed rgba(255,255,255,0.04);color:var(--texto)}
+.respuesta{margin-top:8px;color:var(--cian)}
+.admin{box-shadow:0 6px 28px rgba(0,197,201,0.06)}
+button{padding:8px 12px;border:none;background:var(--cian);color:var(--azul-oscuro);border-radius:6px;cursor:pointer;font-weight:600}
+button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--texto)}
+button:disabled{opacity:0.5;cursor:not-allowed}
+input, select{padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:var(--texto)}
+footer{padding:12px;text-align:center;color:rgba(232,251,251,0.6);border-top:1px solid rgba(255,255,255,0.02);position:relative;z-index:1}
+@media (max-width:600px){
+  header{flex-direction:column;gap:8px}
+  .grid{grid-template-columns:1fr}
+}

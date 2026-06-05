@@ -519,5 +519,69 @@ public class ParqueaderoRepository {
         }
         contadorRegistros = 1;
     }
-}
 
+    /**
+     * Configura la capacidad del parqueadero por tipo. No permite reducir la capacidad
+     * por debajo del número de espacios actualmente ocupados. Si la nueva capacidad es
+     * válida, recrea la estructura de espacios y preserva las ocupaciones actuales.
+     *
+     * @param capacidadCarros nueva capacidad para carros
+     * @param capacidadMotos nueva capacidad para motos
+     * @param capacidadBicicletas nueva capacidad para bicicletas
+     * @return true si la reconfiguración fue exitosa, false si no se puede aplicar
+     */
+    public synchronized boolean configurarCapacidad(int capacidadCarros, int capacidadMotos, int capacidadBicicletas) {
+        int nuevaTotal = capacidadCarros + capacidadMotos + capacidadBicicletas;
+        int ocupadosActuales = obtenerEspaciosOcupados();
+        if (nuevaTotal < ocupadosActuales) {
+            // No podemos reducir por debajo de lo ocupado actualmente
+            return false;
+        }
+
+        // Recolectar placas ocupadas junto con su tipo
+        List<String> placasOcupadas = new ArrayList<>();
+        Map<String, TipoVehiculo> tipoPorPlaca = new HashMap<>();
+        for (EspacioParqueo esp : espacios.values()) {
+            if (!esp.isDisponible() && esp.getPlacaVehiculoActual() != null) {
+                placasOcupadas.add(esp.getPlacaVehiculoActual());
+                tipoPorPlaca.put(esp.getPlacaVehiculoActual(), esp.getTipoVehiculo());
+            }
+        }
+
+        // Reconstruir espacios
+        this.espacios.clear();
+        int numeroEspacio = 1;
+        for (int i = 0; i < capacidadCarros; i++) {
+            espacios.put(numeroEspacio, new EspacioParqueo(numeroEspacio, TipoVehiculo.CARRO));
+            numeroEspacio++;
+        }
+        for (int i = 0; i < capacidadMotos; i++) {
+            espacios.put(numeroEspacio, new EspacioParqueo(numeroEspacio, TipoVehiculo.MOTO));
+            numeroEspacio++;
+        }
+        for (int i = 0; i < capacidadBicicletas; i++) {
+            espacios.put(numeroEspacio, new EspacioParqueo(numeroEspacio, TipoVehiculo.BICICLETA));
+            numeroEspacio++;
+        }
+
+        // Reasignar ocupaciones existentes a los primeros espacios del mismo tipo
+        for (String placa : placasOcupadas) {
+            TipoVehiculo tipo = tipoPorPlaca.getOrDefault(placa, TipoVehiculo.CARRO);
+            for (EspacioParqueo esp : espacios.values()) {
+                if (esp.isDisponible() && esp.getTipoVehiculo() == tipo) {
+                    esp.setDisponible(false);
+                    esp.setPlacaVehiculoActual(placa);
+                    break;
+                }
+            }
+        }
+
+        // Actualizar capacidad por tipo y total
+        this.capacidadPorTipo.put(TipoVehiculo.CARRO, capacidadCarros);
+        this.capacidadPorTipo.put(TipoVehiculo.MOTO, capacidadMotos);
+        this.capacidadPorTipo.put(TipoVehiculo.BICICLETA, capacidadBicicletas);
+        this.capacidadTotal = nuevaTotal;
+
+        return true;
+    }
+}

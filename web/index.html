@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parqueadero - Interfaz Web</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Parqueadero</h1>
+    <div id="login">
+      <input id="username" placeholder="Usuario">
+      <input id="password" placeholder="Contraseña" type="password">
+      <button id="btnLogin">Iniciar sesión</button>
+      <button id="btnLogout" class="hidden">Cerrar sesión</button>
+      <span id="userInfo"></span>
+    </div>
+  </header>
+
+  <main>
+    <section id="acciones" class="hidden">
+      <h2>Acciones</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Registrar Ingreso</h3>
+          <input id="ingresaPlaca" placeholder="Placa">
+          <select id="ingresaTipo">
+            <option value="CARRO">CARRO</option>
+            <option value="MOTO">MOTO</option>
+            <option value="BICICLETA">BICICLETA</option>
+          </select>
+          <button id="btnIngreso">Registrar</button>
+          <div id="resIngreso" class="respuesta"></div>
+        </div>
+        <div class="card">
+          <h3>Registrar Salida</h3>
+          <input id="salidaPlaca" placeholder="Placa">
+          <button id="btnSalida">Registrar Salida</button>
+          <div id="resSalida" class="respuesta"></div>
+        </div>
+        <div class="card">
+          <h3>Buscar por placa</h3>
+          <input id="buscarPlaca" placeholder="Placa">
+          <button id="btnBuscar">Buscar</button>
+          <pre id="buscarRes" class="lista"></pre>
+        </div>
+        <div class="card">
+          <h3>Vehículos Activos</h3>
+          <button id="btnActivos">Actualizar</button>
+          <pre id="activosList" class="lista"></pre>
+        </div>
+        <div class="card">
+          <h3>Tablero de Ocupación</h3>
+          <button id="btnTablero">Mostrar</button>
+          <pre id="tablero" class="lista"></pre>
+        </div>
+        <div class="card admin hidden" id="cardTarifas">
+          <h3>Tarifas</h3>
+          <pre id="tarifasList" class="lista"></pre>
+          <input id="tarTipo" placeholder="CARRO/MOTO/BICICLETA">
+          <input id="tarValor" placeholder="Valor">
+          <button id="btnTarifa">Actualizar</button>
+          <div id="resTarifa" class="respuesta"></div>
+        </div>
+        <div class="card admin hidden">
+          <h3>Historial</h3>
+          <button id="btnHistorial">Actualizar</button>
+          <pre id="historialList" class="lista"></pre>
+        </div>
+        <div class="card admin hidden">
+          <h3>Reporte Diario</h3>
+          <button id="btnReporte">Generar</button>
+          <pre id="reporteRes" class="lista"></pre>
+        </div>
+        <div class="card admin hidden">
+          <h3>Anular Operación</h3>
+          <input id="anularId" placeholder="ID registro">
+          <input id="anularJust" placeholder="Justificación">
+          <button id="btnAnular">Anular</button>
+          <div id="resAnular" class="respuesta"></div>
+        </div>
+        <div class="card admin hidden">
+          <h3>Gestión de Usuarios</h3>
+          <pre id="usuariosList" class="lista"></pre>
+          <input id="uNombre" placeholder="Nombre usuario">
+          <input id="uPass" placeholder="Contraseña" type="password">
+          <select id="uRol">
+            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+            <option value="CAJERO_OPERADOR">CAJERO_OPERADOR</option>
+          </select>
+          <button id="btnCrearUsuario">Crear Usuario</button>
+          <input id="uEliminar" placeholder="Nombre a eliminar">
+          <button id="btnEliminarUsuario">Eliminar Usuario</button>
+        </div>
+        <div class="card admin hidden">
+          <h3>Configurar Capacidad</h3>
+          <input id="capCarros" placeholder="Cap Carros" type="number">
+          <input id="capMotos" placeholder="Cap Motos" type="number">
+          <input id="capBicis" placeholder="Cap Bicis" type="number">
+          <button id="btnConfigCap">Aplicar</button>
+          <div id="resConfig" class="respuesta"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Interfaz web mínima para prueba del sistema de parqueadero.</small>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
